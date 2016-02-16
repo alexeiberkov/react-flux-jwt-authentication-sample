@@ -8,13 +8,14 @@ export default class Login extends React.Component {
     super()
     this.state = {
       user: '',
-      password: ''
+      password: '',
+      rememberMe: false
     };
   }
 
   login(e) {
     e.preventDefault();
-    Auth.login(this.state.user, this.state.password)
+    Auth.login(this.state.user, this.state.password, this.state.rememberMe)
       .catch(function(err) {
         alert("There's an error logging in");
         console.log("Error logging in", err);
@@ -34,10 +35,20 @@ export default class Login extends React.Component {
           <label htmlFor="password">Password</label>
           <input type="password" valueLink={this.linkState('password')} className="form-control" id="password" ref="password" placeholder="Password" />
         </div>
+        <div className="form-group">
+          <label htmlFor="rememberMe">Remember me</label>
+          <input type="checkbox" className="form-control" id="rememberMe" ref="rememberMe" placeholder="Remember Me" onChange={this.toggleRememberMe} />
+        </div>
         <button type="submit" className="btn btn-default" onClick={this.login.bind(this)}>Submit</button>
       </form>
     </div>
     );
+  }
+
+  toggleRememberMe() {
+      this.setState({
+          rememberMe: !this.state.rememberMe
+      });
   }
 }
 

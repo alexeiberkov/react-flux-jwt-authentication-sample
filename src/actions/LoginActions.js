@@ -3,9 +3,10 @@ import {LOGIN_USER, LOGOUT_USER} from '../constants/LoginConstants.js';
 import RouterContainer from '../services/RouterContainer'
 
 export default {
-  loginUser: (jwt) => {
+  loginUser: (jwt, rememberMe) => {
     var savedJwt = localStorage.getItem('jwt');
-    
+    rememberMe = rememberMe || false;
+
     AppDispatcher.dispatch({
       actionType: LOGIN_USER,
       jwt: jwt
@@ -15,7 +16,10 @@ export default {
       var nextPath = RouterContainer.get().getCurrentQuery().nextPath || '/';
 
       RouterContainer.get().transitionTo(nextPath);
-      localStorage.setItem('jwt', jwt);
+
+      if(rememberMe) {
+        localStorage.setItem('jwt', jwt);
+      }
     }
   },
   logoutUser: () => {

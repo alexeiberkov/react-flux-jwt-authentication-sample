@@ -5,7 +5,7 @@ import LoginActions from '../actions/LoginActions';
 
 class AuthService {
 
-  login(username, password) {
+  login(username, password, rememberMe) {
     return this.handleAuth(when(request({
       url: LOGIN_URL,
       method: 'POST',
@@ -14,7 +14,7 @@ class AuthService {
       data: {
         username, password
       }
-    })));
+    })), rememberMe);
   }
 
   logout() {
@@ -33,11 +33,11 @@ class AuthService {
     })));
   }
 
-  handleAuth(loginPromise) {
+  handleAuth(loginPromise, rememberMe) {
     return loginPromise
       .then(function(response) {
         var jwt = response.id_token;
-        LoginActions.loginUser(jwt);
+        LoginActions.loginUser(jwt, rememberMe);
         return true;
       });
   }
